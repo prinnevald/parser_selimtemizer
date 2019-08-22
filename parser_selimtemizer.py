@@ -5,7 +5,7 @@ import os
 
 path = "files"
 source = "http://selimtemizer.com/csci235/"
-info = requests.session().get(source).text
+info = requests.get(source).text
 elements = BeautifulSoup(info, 'lxml').find_all('a')
 
 
