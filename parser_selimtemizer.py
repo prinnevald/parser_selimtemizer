@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import shutil
-import time
 import os
 
 path = "files"
@@ -11,12 +10,11 @@ elements = BeautifulSoup(info, 'lxml').find_all('a')
 
 
 def parseFiles():
+    if not os.path.exists(path):
+        os.makedirs(path)
     for each in elements:
-        if not os.path.exists(path):
-            os.makedirs(path)
         with open(path + '/' + each.get_text().replace(" ", "_"), 'wb') as f:
             f.write(requests.get(source + each.get('href')).content)
-        time.sleep(1)
 
 
 def zipFiles():
@@ -26,9 +24,7 @@ def zipFiles():
     shutil.rmtree(os.path.join(os.getcwd(), path))
 
 
-print("Compress the files into a .zip folder? Y or N:")
-if(input() == 'Y' or 'y'):
-    zipFiles()
-else:
-    parseFiles()
+print("Compress the output? Y or N:")
+userinput = input()
+zipFiles() if userinput == 'Y' or userinput == 'y' else parseFiles()
 print("Parsing Complete!")
