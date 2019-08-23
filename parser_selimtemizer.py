@@ -13,7 +13,8 @@ def parseFiles():
     if not os.path.exists(path):
         os.makedirs(path)
     for each in elements:
-        with open(path + '/' + each.get_text().replace(" ", "_"), 'wb') as f:
+    	tosave = path + os.sep() + each.get_text().replace(" ", "_")
+        with open(tosave, 'wb') as f:
             f.write(requests.get(source + each.get('href')).content)
 
 
@@ -24,7 +25,6 @@ def zipFiles():
     shutil.rmtree(os.path.join(os.getcwd(), path))
 
 
-print("Compress the output? Y or N:")
-userinput = input()
+userinput = input('Compress the output? Y or N:')
 zipFiles() if userinput == 'Y' or userinput == 'y' else parseFiles()
 print("Parsing Complete!")
